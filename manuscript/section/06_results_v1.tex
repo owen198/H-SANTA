@@ -1,23 +1,21 @@
 \newpage
 
-\section{Results and Analysis}
+\section{Experimental Results and Analysis}
 \label{sec:06_results}
 
 \subsection{Retrieval Effectiveness}
-% Report primary retrieval results against the baselines; do not insert hypothetical findings.
+% Compare original SANTA, Poincare SDA, and Lorentz SDA on CodeSearchNet, Adv, and S1000D.
+% Follow the established evaluation protocols and report uncertainty across random seeds.
+% Report measured results only; do not insert hypothetical findings.
 
-\subsection{Structural Alignment Analysis}
-% Test whether the representations preserve the structural properties defined earlier.
+\subsection{Hierarchical Structure Preservation}
+% Evaluate parent--child and ancestor--descendant relationships in held-out S1000D data.
+% Distinguish relational proximity from hierarchy direction and compare structural and retrieval outcomes.
 
-\subsection{Ablation Studies}
-% Isolate contributions of geometry, structure, and alignment under comparable conditions.
+\subsection{Ablation Analysis}
+% Isolate geometric alignment effects while controlling encoders, supervision, negative samples, and training budgets.
+% Examine curvature and intrinsic dimension with consistent representation scales and validation-based tuning.
 
-\subsection{Sensitivity and Robustness}
-% Assess relevant parameter choices and robustness conditions supported by the study design.
-
-\subsection{Efficiency Analysis}
-% Compare training and inference costs, memory use, and retrieval latency.
-
-\subsection{Qualitative and Error Analysis}
-% Use representative cases and failure cases to explain quantitative findings.
-
+\subsection{Case Study}
+% Compare representative successes and failures, showing retrieved content and its position in the XML hierarchy.
+% Explain whether observed errors concern semantic relevance, structural relationships, or both.
