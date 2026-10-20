@@ -1,0 +1,70 @@
+\newpage
+
+\section{Preliminary}
+\label{sec:03_problem_formulation}
+
+\subsection{SANTA and Structured Data Alignment}
+SANTA learns representations of natural-language text and structured data in a shared embedding space~\cite{li2023structure}. Its Structured Data Alignment (SDA) objective uses paired structured and unstructured content as positive examples and contrastively distinguishes matched pairs from mismatched examples. Masked Entity Prediction provides complementary supervision by reconstructing masked entities in structured data. These existing objectives provide the background for examining the geometry of SDA; the proposed changes to its representations and alignment objective are described in Section~\ref{sec:04_method}.
+
+\subsection{Hyperbolic Geometry for Representation Learning}
+Hyperbolic space has constant negative sectional curvature and supports compact representations of hierarchical relationships~\cite{nickel2017poincare,nickel2018learning}. Let $c>0$ denote the magnitude of curvature, so that the curvature is $-c$, and let $d$ denote the intrinsic dimension. The Poincar\'e ball and Lorentz hyperboloid are two coordinate models of this same geometry. Their definitions below use a common curvature convention to support subsequent comparisons.
+
+\subsubsection{Poincar\'e Ball Model}
+The Poincar\'e ball is defined by
+\begin{equation}
+ \mathbb{B}_c^d=\{\mathbf{x}\in\mathbb{R}^d:c\|\mathbf{x}\|_2^2<1\},
+ \qquad g_{\mathbf{x}}=(\lambda_{\mathbf{x}}^c)^2 I_d,
+ \qquad \lambda_{\mathbf{x}}^c=\frac{2}{1-c\|\mathbf{x}\|_2^2}.
+ \label{eq:poincare-domain}
+\end{equation}
+Its geodesic distance is
+\begin{equation}
+ d_{\mathbb B}^c(\mathbf{x},\mathbf{y})=
+ \frac{1}{\sqrt c}\operatorname{arcosh}\!\left(
+ 1+\frac{2c\|\mathbf{x}-\mathbf{y}\|_2^2}
+ {(1-c\|\mathbf{x}\|_2^2)(1-c\|\mathbf{y}\|_2^2)}\right).
+ \label{eq:poincare-distance}
+\end{equation}
+A tangent vector $\mathbf{v}\in T_{\mathbf{0}}\mathbb{B}_c^d\cong\mathbb{R}^d$ can be mapped into the ball using the exponential map~\cite{ganea2018hyperbolic}:
+\begin{equation}
+ \exp_{\mathbf{0}}^{\mathbb B,c}(\mathbf{v})=
+ \tanh(\sqrt c\|\mathbf{v}\|_2)
+ \frac{\mathbf{v}}{\sqrt c\|\mathbf{v}\|_2}.
+ \label{eq:poincare-exp}
+\end{equation}
+At $\mathbf{v}=\mathbf{0}$, the map is defined by continuity as $\mathbf{0}$. The conformal factor makes distances grow near the boundary, allowing radial position to encode hierarchical depth when supported by the learning objective.
+
+\subsubsection{Lorentz Hyperboloid Model}
+For $\mathbf{x}=(x_0,\mathbf{x}_s)$ and $\mathbf{y}=(y_0,\mathbf{y}_s)$ in $\mathbb{R}^{d+1}$, define the Lorentz inner product and upper hyperboloid by
+\begin{equation}
+ \langle\mathbf{x},\mathbf{y}\rangle_L=-x_0y_0+\mathbf{x}_s^\top\mathbf{y}_s,
+ \qquad
+ \mathbb{H}_c^d=\{\mathbf{x}:\langle\mathbf{x},\mathbf{x}\rangle_L=-1/c,\ x_0>0\}.
+ \label{eq:lorentz-domain}
+\end{equation}
+The induced metric on its tangent spaces is positive definite, and the geodesic distance is~\cite{nickel2018learning}
+\begin{equation}
+ d_{\mathbb H}^c(\mathbf{x},\mathbf{y})=
+ \frac{1}{\sqrt c}\operatorname{arcosh}(-c\langle\mathbf{x},\mathbf{y}\rangle_L).
+ \label{eq:lorentz-distance}
+\end{equation}
+At the origin $\mathbf{o}=(1/\sqrt c,\mathbf{0})$, a tangent vector has the form $\mathbf{v}=(0,\mathbf{h})$. Its exponential map is
+\begin{equation}
+ \exp_{\mathbf{o}}^{\mathbb H,c}(0,\mathbf{h})=
+ \left(\frac{\cosh(\sqrt c\|\mathbf{h}\|_2)}{\sqrt c},
+ \frac{\sinh(\sqrt c\|\mathbf{h}\|_2)}{\sqrt c\|\mathbf{h}\|_2}\mathbf{h}\right),
+ \label{eq:lorentz-exp}
+\end{equation}
+with value $\mathbf{o}$ at $\mathbf{h}=\mathbf{0}$. This construction produces a valid manifold point from a Euclidean encoder representation interpreted as a tangent vector.
+
+\subsubsection{Correspondence Between the Models}
+The distance-preserving coordinate transformation from the ball to the hyperboloid and its inverse are
+\begin{equation}
+ \Phi_c(\mathbf{z})=
+ \left(\frac{1+c\|\mathbf{z}\|_2^2}{\sqrt c(1-c\|\mathbf{z}\|_2^2)},
+ \frac{2\mathbf{z}}{1-c\|\mathbf{z}\|_2^2}\right),
+ \qquad
+ \Phi_c^{-1}(\mathbf{x})=\frac{\mathbf{x}_s}{\sqrt c x_0+1}.
+ \label{eq:hyperbolic-correspondence}
+\end{equation}
+Consequently, $d_{\mathbb H}^c(\Phi_c(\mathbf{z}),\Phi_c(\mathbf{w}))=d_{\mathbb B}^c(\mathbf{z},\mathbf{w})$. The origin metrics have different coordinate scales: matched tangent vectors satisfy $\mathbf{h}=2\mathbf{v}$ in Eqs.~\ref{eq:poincare-exp} and~\ref{eq:lorentz-exp}. Comparisons should therefore control intrinsic dimension, curvature, and representation scale; differences between implementations may reflect optimization or numerical behavior rather than different underlying geometries. These definitions supply the distances and mappings needed to formulate hyperbolic SDA, while its scoring function and training objective belong to the proposed method.

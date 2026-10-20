@@ -1,0 +1,21 @@
+\newpage
+
+\section{Introduction}
+\label{sec:01_introduction}
+
+\subsection{Research Background and Motivation}
+Structure-aware pretraining can improve dense retrieval over structured data by aligning structured content with natural-language text and learning structural semantics, as demonstrated by SANTA in code and product search~\cite{li2023structure}.
+From a geometric perspective, Poincar\'e embeddings provide a means of jointly representing hierarchy and similarity in hyperbolic space, offering a compact representation of data with latent hierarchical structure~\cite{nickel2017poincare}.
+% Explain why semantic similarity alone may not preserve the structure relevant to retrieval.
+
+\subsection{Research Gap and Objectives}
+Hyperbolic geometry provides a framework for representing hierarchical relationships through models such as the Poincar\'e ball and the Lorentz hyperboloid~\cite{nickel2018learning}. An important development in machine learning was the work of Nickel and Kiela~\cite{nickel2017poincare}, who demonstrated that Poincar\'e embeddings could capture hierarchy and similarity in low-dimensional representations, with favorable results on taxonomy reconstruction and link prediction. These findings suggest that representation geometry can support the learning of hierarchical structure. More recently, HypRAG applied Lorentz-based representations to dense retrieval for retrieval-augmented generation, using geometry-aware pooling to preserve hierarchical information when aggregating token representations into document embeddings~\cite{madhu2026hyprag}. Its evaluations on MTEB and RAGBench reported improvements over the evaluated Euclidean baselines in embedding quality and in context and answer relevance, providing evidence for the practical value of hyperbolic representations in retrieval settings. For structure-aware dense retrieval, this motivates examining how hyperbolic geometry can complement the alignment between structured data and natural-language descriptions. Specifically, this study aims to incorporate hyperbolic representations into the Structured Data Alignment (SDA) component of SANTA~\cite{li2023structure} and evaluate whether this geometric choice improves retrieval performance compared with its original formulation.
+
+\subsection{Contributions}
+% Provisional contributions: revise against the final method and empirical evidence.
+This study aims to make two contributions:
+\begin{enumerate}
+    \item We aim to incorporate hyperbolic representations into SANTA's SDA component and evaluate their effect on structure-aware dense retrieval.
+    \item We aim to construct an S1000D XML retrieval dataset and use it to evaluate the modified SANTA model against its original formulation.
+\end{enumerate}
+
